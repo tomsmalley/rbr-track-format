@@ -6,11 +6,10 @@ int aa;
 int bb;
 
 // This is a series of polygons defined as a GL style triangle strip.
-// It's in two dimensional space and seems to define "keep out" areas of the
-// track.
-//
-// For example, on the rally school track, it outlines the road with a 10m gap
-// from the centreline.
+// It's in two dimensional space and surrounds the road (never actually covering
+// it), for example, on the rally school track, there is a 10m gap between the
+// inner edges of the triangles and the road.
+// It appears to have no effect on the game.
 typedef struct {
   float x;
   float y;

@@ -1,16 +1,120 @@
-char header[0x10] <comment="MINAATAD">;
-int a;
-int b[9];
+// Scripts, cameras, pacenotes?
+
+// If there are errors loading the dls file, the game creates dlserrors.log.
+// For example:
+// 12-Sep-20 16:58:14 Loading DLS data of stage 71,
+//   animationIdsOffset = 0x658c,
+//   count = 0,
+//   animation id name offsets out of range: NONE,
+//   animationSetsOffset = 0x38,
+//   count = 1,
+//   anim set header 0,
+//   replay camera channels out of range: 3(60351)
+// 12-Sep-20 17:24:31  RBR crashed while loading data
+
+char header[0x8] <comment="DATAANIM backwards">;
+int unknown_1;
+int unknown_2;
+// TODO check if these correspond to anything known in ghidra
+struct Offsets {
+  int animation_sets <format=hex>;
+  int unknown[8] <format=hex>;
+  int animation_ids <format=hex>;
+} offsets;
+
 struct C {
   int a;
   int b;
   int c;
   int d;
-  int count;
-  int rest[17];
+  int a_count;
+  int camera_line_point_count;
+  int rest[14];
 } c;
+
+// I don't know what this represents.
+// Tested on Rally School and New Bobs.
 typedef struct {
   int a;
   int b;
 } A;
-A as[c.count-1];
+A as[c.a_count];
+
+struct ReplayCameraLine {
+  int initial_camera_index;
+  float unknown;
+  // This defines the positions along the driveline at which to switch to certain
+  // replay cameras.
+  typedef struct {
+    // Seems to be one or zero, but also doesn't have an effect?
+    // This is always set to 1 a tiny bit before it's set to 0.
+    int unknown;
+    int camera_channel; // Index
+    float distance_travelled;
+  } ReplayCameraPoint;
+  ReplayCameraPoint points[c.camera_line_point_count];
+} replay_camera_line;
+
+int unknown_crashes_when_changed;
+
+int unknown_1;
+int unknown_2;
+
+typedef struct {
+  float drive_line_start_position;
+  float start_fov;
+  float unknown_1;
+  float unknown_2;
+  float unknown_3;
+  float unknown_4;
+  float unknown_5;
+  float drive_line_end_position;
+  float end_fov;
+  float stuff[9];
+} CameraSettings;
+CameraSettings fov_bits[3];
+
+float fov_rest[378];
+
+int test_size; // Only tested for rally school
+typedef struct {
+  float a;
+  int b;
+  float c;
+  float d;
+  float e[3];
+} Test;
+Test test_bits[test_size];
+
+int pad_test_2[3];
+int test_size_2;
+Test test_bits_2[test_size_2];
+
+int pad_test_3[3];
+int test_size_3;
+Test test_bits_3[test_size_3];
+
+int pad_test_4[3];
+int test_size_4;
+Test test_bits_4[test_size_4];
+
+float gap[122];
+
+int camera_position_count;
+typedef struct {
+  int offset <format=hex>; // This value is used when looking up cameras by ID
+  int offset_2 <format=hex>; // Identical to above, doesn't seem to do anything when changed
+  int unknown[2];
+  // Position
+  float x;
+  float y;
+  float z;
+  float unknown_2;
+  int unknown_3;
+  float unknown_4;
+  float unknown_5[3]; // All ones?
+  int unknown_6;
+} CameraPosition;
+CameraPosition camera_positions[camera_position_count];
+
+float rest[500];
