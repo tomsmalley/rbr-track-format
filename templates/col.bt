@@ -1,0 +1,166 @@
+char header[4] <comment="OC7R">;
+int header_int;
+int a[13];
+int track_keepout_length;
+int aa;
+int bb;
+
+// This is a series of polygons defined as a GL style triangle strip.
+// It's in two dimensional space and seems to define "keep out" areas of the
+// track.
+//
+// For example, on the rally school track, it outlines the road with a 10m gap
+// from the centreline.
+typedef struct {
+  float x;
+  float y;
+} TriangleStrip;
+TriangleStrip keepout[track_keepout_length];
+
+typedef struct {
+  float x;
+  float y;
+  float z;
+  float w;
+  int a;
+  int b;
+} S1;
+
+S1 s1s_1[13];
+int ints_1[8];
+
+S1 s1s_2[2];
+int ints_2[8];
+
+S1 s1s_3[4];
+int ints_3[8];
+
+S1 s1s_4[2];
+int ints_4[6];
+
+S1 s1s_5[6];
+int ints_5[6];
+
+S1 s1s_6[2];
+int ints_6[5];
+
+S1 s1s_7[4];
+int ints_7[6];
+
+S1 s1s_8[2];
+int ints_8[7];
+
+S1 s1s_9[8];
+int ints_9[6];
+
+S1 s1s_10[2];
+int ints_10[5];
+
+S1 s1s_11[4];
+int ints_11[4];
+
+S1 s1s_12[2];
+int ints_12[5];
+
+S1 s1s_13[4];
+int ints_13[5];
+
+S1 s1s_14[2];
+int ints_14[6];
+
+S1 s1s_15[8];
+int ints_15[6];
+
+S1 s1s_16[2];
+int ints_16[6];
+
+S1 s1s_17[4];
+int ints_17[9];
+
+S1 s1s_18[6];
+int ints_18[6];
+
+S1 s1s_19[2];
+int ints_19[6];
+
+S1 s1s_20[4];
+int ints_20[5];
+
+S1 s1s_21[2];
+int ints_21[5];
+
+// 85 S1 structs
+
+typedef struct {
+  float x;
+  float y;
+  float z;
+  float w;
+} Vec4;
+
+Vec4 v4_1[172];
+
+typedef struct {
+  float fs[6];
+  int a;
+  int b;
+} Vec6;
+
+Vec6 v6_1[209];
+
+int ints_22[105];
+
+int i_0;
+int i_1;
+int vec3_count;
+int i_3;
+int i_4;
+
+typedef struct {
+  float x;
+  float y;
+  float z;
+} Vec3;
+
+Vec3 vec3_1[vec3_count];
+
+Vec6 vec6_2[13];
+int ints_23[45];
+
+Vec6 vec6_3[2];
+int ints_24[41];
+
+Vec6 vec6_4[4];
+int ints_25[46];
+
+Vec6 vec6_5[2];
+int ints_26[55];
+
+Vec6 vec6_6[6];
+int ints_27[46];
+
+Vec6 vec6_7[2];
+int ints_28[54];
+
+Vec6 vec6_8[4];
+int ints_29[55];
+
+Vec6 vec6_9[2];
+int ints_30[55];
+
+Vec6 vec6_10[8];
+int ints_31[41];
+
+Vec6 vec6_11[2];
+int ints_32[41];
+
+Vec6 vec6_12[4];
+int ints_33[54];
+
+Vec6 vec6_13[2];
+int ints_34[50];
+
+Vec6 vec6_14[8];
+int ints_35[4];
+
+float todo[400000];

@@ -1,0 +1,14 @@
+int conditions_count;
+typedef struct {
+  char name[];
+  int material_count;
+  typedef struct {
+    int x;
+    int y;
+    char dat [x*y];
+  } Material;
+  struct Materials {
+    Material material[material_count] <optimize=false>;
+  } materials;
+} Condition;
+Condition condition[conditions_count] <optimize=false>;
