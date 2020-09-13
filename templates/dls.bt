@@ -1,4 +1,7 @@
-// Scripts, cameras, pacenotes?
+// Animations and replay cameras
+
+// Any of the unknown parts are named unknown_address, where the address is
+// taken from the rally school stage dls file.
 
 // If there are errors loading the dls file, the game creates dlserrors.log.
 // For example:
@@ -23,16 +26,24 @@ typedef struct Position {
 // File starts here
 
 char header[0x8] <comment="DATAANIM backwards">;
-int unknown_1;
-int unknown_2;
-// TODO check if these correspond to anything known in ghidra
-struct Offsets {
-  int animation_sets <format=hex>;
-  int unknown[8] <format=hex>;
-  int animation_ids <format=hex>;
-} offsets;
+if (header != "MINAATAD") return "Incorrect header";
 
-struct Sizes {
+int unknown_0x8;
+int unknown_0xC;
+struct Addresses {
+  int animation_sets <format=hex>;
+  int unknown_0x482C <format=hex>;
+  int camera_positions <format=hex>;
+  int camera_specs <format=hex>;
+  int unknown_0x6570 <format=hex>;
+  int unknown_0x6574 <format=hex>;
+  int unknown_0x6578 <format=hex>;
+  int unknown_0x6590 <format=hex>;
+  int finish_line_position <format=hex>;
+  int animation_ids <format=hex>;
+} addresses;
+
+struct AnimationSets {
   int unknown_1;
   int unknown_2;
   int unknown_3;
@@ -40,8 +51,20 @@ struct Sizes {
   int camera_channel_count;
   int camera_line_point_count;
   int b_count;
-  int unknown_5[13];
-} sizes;
+  int unknown_count;
+  int camera_settings_count;
+  int unknown_0x41E4_count;
+  int unknown_8;
+  int unknown_9;
+  int camera_channels_address_1 <format=hex>;
+  int replay_camera_line_address <format=hex>;
+  int bs_address <format=hex>;
+  int unknown_address <format=hex>;
+  int camera_settings_address <format=hex>;
+  int unknown_0x41E4_address <format=hex>;
+  int camera_channels_address_2 <format=hex>;
+  int unknown_0x43AC_address <format=hex>;
+} animation_sets;
 
 // Camera ID array.
 // Tested on Rally School and New Bobs.
@@ -49,7 +72,7 @@ typedef struct {
   int camera_id <format=hex>;
   int unknown;
 } CameraChannel;
-CameraChannel camera_channels[sizes.camera_channel_count];
+CameraChannel camera_channels[animation_sets.camera_channel_count];
 
 // This defines the positions along the driveline at which to switch to certain
 // replay cameras.
@@ -60,14 +83,14 @@ typedef struct {
   // This is always set to 1 a tiny bit before it's set to 0.
   int unknown;
 } ReplayCameraPoint;
-ReplayCameraPoint replay_camera_line[sizes.camera_line_point_count];
+ReplayCameraPoint replay_camera_line[animation_sets.camera_line_point_count];
 
 typedef struct {
   int unknown_1;
   float unknown_2;
   float unknown_3;
 } B;
-B bs[sizes.b_count];
+B bs[animation_sets.b_count];
 
 struct CameraSettings {
   typedef struct {
@@ -90,35 +113,19 @@ struct CameraSettings {
     } FovChange;
     FovChange fov_changes[fov_change_count];
   } CameraSettingsItem;
-  CameraSettingsItem fov_bits[16] <optimize=false>;
+  CameraSettingsItem settings[animation_sets.camera_settings_count] <optimize=false>;
 } camera_settings;
 
-float fov_rest[2];
-
-// 0x9AC for rally school
-int test_size; // Only tested for rally school
+// TODO figure out this section
 typedef struct {
-  float unknown_1;
+  int unknown_1;
   int unknown_2;
   float unknown_3;
-  float unknown_4;
-  float unknown_5[3];
-} Test;
-Test test_bits[test_size];
+} Unknown_0x41E4;
+Unknown_0x41E4 unknown_0x41E4[animation_sets.unknown_0x41E4_count];
 
-int pad_test_2[3];
-int test_size_2;
-Test test_bits_2[test_size_2];
-
-int pad_test_3[3];
-int test_size_3;
-Test test_bits_3[test_size_3];
-
-int pad_test_4[3];
-int test_size_4;
-Test test_bits_4[test_size_4];
-
-float gap[122];
+int unknown_0x43AC_count;
+int unknown_0x43AC[unknown_0x43AC_count];
 
 // 0x43C8 for rally school
 int camera_position_count;
@@ -143,49 +150,61 @@ typedef struct {
 } CameraPosition;
 CameraPosition camera_positions[camera_position_count];
 
-int unknown_3[3];
-
-// 0x4838 for rally school
-int unknown_4_count;
-// These values are guessed, I have no confirmation of them yet.
-typedef struct {
-  float unknown_1;
-  Position position;
+struct Unknown_0x482C {
+  int inner_count;
   typedef struct {
-    float v[3];
-  } Vector3;
-  Vector3 unknown_vector_1;
-  // Seems to be a negated version of the vector above.
-  Vector3 unknown_vector_2;
-  float driveline_position;
-} SomeFloats;
-SomeFloats unknown_4[unknown_4_count];
+    int unknown_1 <format=hex>;
+    int unknown_2;
+    // This contains some positions which draw out the road.
+    int inner_count;
+    // These values are guessed, I have no confirmation of them yet.
+    typedef struct {
+      float unknown_1;
+      Position position;
+      typedef struct {
+        float v[3];
+      } Vector3;
+      // Appears to be something like a heading. Adding these to positions
+      // approximately results in the next point.
+      Vector3 unknown_vector_1;
+      // Seems to be a negated version of the vector above.
+      Vector3 unknown_vector_2;
+      float driveline_position;
+    } SomeFloats;
+    SomeFloats inner[inner_count];
+  } Unknown_0x482C_Inner;
+  Unknown_0x482C_Inner inner[inner_count] <optimize=false>;
+} unknown_0x482C;
 
-// 0x63BC for rally school
-int camera_specs_count;
-typedef struct {
-  int camera_id <format=hex>;
-  // mode=0: Fixed camera - uses the angle specified in the camera position section.
-  // mode=-1: Look at car
-  // mode=CameraID: Look at the position of another camera
-  // Other modes appear to be interpreted as 0.
-  int mode <format=hex>;
-  float unknown_2;
-  // 0: no wobble. Sensible values are less than 0.5.
-  float wobble_factor;
-  float unknown_4;
-  float unknown_5;
-} CameraSpec;
-CameraSpec camera_specs[camera_specs_count];
+struct CameraSpecs {
+  int camera_specs_count;
+  typedef struct {
+    int camera_id <format=hex>;
+    // mode=0: Fixed camera - uses the angle specified in the camera position section.
+    // mode=-1: Look at car
+    // mode=CameraID: Look at the position of another camera
+    // Other modes appear to be interpreted as 0.
+    int mode <format=hex>;
+    float unknown_2;
+    // 0: no wobble. Sensible values are less than 0.5.
+    float wobble_factor;
+    float unknown_4;
+    float unknown_5;
+  } CameraSpec;
+  CameraSpec cameras[camera_specs_count];
+} camera_specs;
 
-float rest[9];
+// These two are guessed. For the rally school, the coordinates certainly appear
+// to be correct, but I don't know what these are used for.
+int unknown_0x6570;
+int unknown_0x6574;
+int unknown_0x6578;
+int unknown_0x6578_arr[unknown_0x6578];
 
-char driveline[12];
+Position finish_line_position;
 
-if (driveline != "Driveline") {
-  return "Driveline string not found";
-} else if (header != "MINAATAD") {
-  return "Incorrect header";
-} else {
-  return "Parse OK";
-}
+float unknown_7;
+
+int animation_ids;
+int driveline_string_length;
+char driveline[driveline_string_length];
