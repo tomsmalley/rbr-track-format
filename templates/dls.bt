@@ -83,10 +83,6 @@ struct CameraSettings {
       int unknown_5;
       float fov_driveline_distance;
       float fov;
-      // According to wallaby, there are other possible effects:
-      // Rolling
-      // Changing camera position
-      // Changing angle of sight (only by fixed "look at" point)
       float unknown_6;
       float unknown_7;
       float unknown_8;
