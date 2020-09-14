@@ -38,7 +38,7 @@ struct Addresses {
   int unknown_0x6570 <format=hex>;
   int unknown_0x6574 <format=hex>;
   int unknown_0x6578 <format=hex>;
-  int unknown_0x6590 <format=hex>;
+  int driveline_string <format=hex>;
   int finish_line_position <format=hex>;
   int animation_ids <format=hex>;
 } addresses;
@@ -52,7 +52,7 @@ struct AnimationSets {
   int camera_line_point_count;
   int b_count;
   int unknown_count;
-  int camera_settings_count;
+  int camera_keyframes_count;
   int unknown_0x41E4_count;
   int unknown_8;
   int unknown_9;
@@ -60,7 +60,7 @@ struct AnimationSets {
   int replay_camera_line_address <format=hex>;
   int bs_address <format=hex>;
   int unknown_address <format=hex>;
-  int camera_settings_address <format=hex>;
+  int camera_keyframes_address <format=hex>;
   int unknown_0x41E4_address <format=hex>;
   int camera_channels_address_2 <format=hex>;
   int unknown_0x43AC_address <format=hex>;
@@ -92,7 +92,7 @@ typedef struct {
 } B;
 B bs[animation_sets.b_count];
 
-struct CameraSettings {
+struct CameraKeyframes {
   typedef struct {
     int camera_id <format=hex>;
     // 4 = ???
@@ -100,7 +100,7 @@ struct CameraSettings {
     // 12 = fov key frame
     // 16 = ???
     int mode;
-    int fov_change_count;
+    int keyframes_count;
     int unknown_4;
     typedef struct {
       int unknown_5;
@@ -110,11 +110,11 @@ struct CameraSettings {
       float unknown_7;
       float unknown_8;
       float unknown_9;
-    } FovChange;
-    FovChange fov_changes[fov_change_count];
-  } CameraSettingsItem;
-  CameraSettingsItem settings[animation_sets.camera_settings_count] <optimize=false>;
-} camera_settings;
+    } KeyFrame;
+    KeyFrame keyframes[keyframes_count];
+  } KeyFrames;
+  KeyFrames keyframes[animation_sets.camera_keyframes_count] <optimize=false>;
+} camera_keyframes;
 
 // TODO figure out this section
 typedef struct {
@@ -124,31 +124,34 @@ typedef struct {
 } Unknown_0x41E4;
 Unknown_0x41E4 unknown_0x41E4[animation_sets.unknown_0x41E4_count];
 
-int unknown_0x43AC_count;
-int unknown_0x43AC[unknown_0x43AC_count];
+struct Unknown_0x43AC {
+  int count;
+  int items[count];
+} unknown_0x43AC;
 
-// 0x43C8 for rally school
-int camera_position_count;
-typedef struct {
-  int camera_id <format=hex>;
-  int camera_id_2 <format=hex>;
-  int unknown[2];
-  // Position of camera in world coordinates
-  Position position;
-  // All angles are specified in degrees. This is only used for fixed cameras.
-  struct Angle {
-    // Angle from horizontal. Negative looks upwards.
-    float pitch;
-    // Angle from horizontal. Positive tilts camera clockwise.
-    float roll;
-    // 0 Looks in positive Y direction?
-    // Positive values turn camera clockwise in plan view.
-    float yaw;
-  } angle;
-  float unknown_5[3]; // All ones?
-  int unknown_6;
-} CameraPosition;
-CameraPosition camera_positions[camera_position_count];
+struct CameraPositions {
+  int count;
+  typedef struct {
+    int camera_id <format=hex>;
+    int camera_id_2 <format=hex>;
+    int unknown[2];
+    // Position of camera in world coordinates
+    Position position;
+    // All angles are specified in degrees. This is only used for fixed cameras.
+    struct Angle {
+      // Angle from horizontal. Negative looks upwards.
+      float pitch;
+      // Angle from horizontal. Positive tilts camera clockwise.
+      float roll;
+      // 0 Looks in positive Y direction?
+      // Positive values turn camera clockwise in plan view.
+      float yaw;
+    } angle;
+    float unknown_5[3]; // All ones?
+    int unknown_6;
+  } CameraPosition;
+  CameraPosition items[count];
+} camera_positions;
 
 struct Unknown_0x482C {
   int inner_count;
@@ -199,12 +202,29 @@ struct CameraSpecs {
 int unknown_0x6570;
 int unknown_0x6574;
 int unknown_0x6578;
-int unknown_0x6578_arr[unknown_0x6578];
+typedef struct {
+  float unknown_1;
+  float unknown_2;
+  float unknown_3;
+  float unknown_4;
+} Unknown_0x6578;
+Unknown_0x6578 unknown_0x6578_arr[unknown_0x6578];
 
 Position finish_line_position;
 
 float unknown_7;
 
-int animation_ids;
-int driveline_string_length;
-char driveline[driveline_string_length];
+struct AnimationIds {
+  int count;
+  typedef struct {
+    int camera_id <format=hex>;
+    int unknown_2;
+  } AnimationId;
+  AnimationId items[count];
+} animation_ids;
+
+// TODO I don't know what this is used for
+struct DrivelineString {
+  int length;
+  char str[length];
+} driveline_string;
