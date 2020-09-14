@@ -7,40 +7,40 @@ Wallaby track creation tool, but the knowledge is kept secret.
 
 The following definitions are from the Wallaby manual or Tracks.ini:
 
-track.bws
-: [Not Started]
-: Brake wall system, doesn't seem to be present
+__track.bws__\
+Brake wall system\
+[Not Started] Doesn't seem to be present. I also don't know what this means, but I've seen references to it in ghidra.
 
-track.col
-: [Not Started]
-: Static colliders, including ground
+__track.col__\
+Static colliders, including ground\
+[Not Started]
 
-track.dls
-: [WIP] The rough structure is done. Haven't figured out the purpose of all structures yet.
-: Scripts (animations) and cameras
+__track.dls__\
+Scripts (animations) and cameras\
+[WIP] The rough structure is mostly done. Haven't figured out the purpose of all structures yet.
 
-track.fnc
-: [Not Started]
-: Fence data (tapes, nets, pole fences)
+__track.fnc__\
+Fence data (tapes, nets, pole fences)\
+[Not Started]
 
-track.ini
-: [Not Started]
-: Texture information
+__track.ini__\
+Texture information\
+[Not Started]
 
-track.lbs
-: [Not Started]
-: Track geometry and settings
+__track.lbs__\
+Track geometry and settings\
+[Not Started]
 
-track.mat
-: [WIP]
-: Physical surface definitions based on textures
+__track.mat__\
+Physical surface definitions based on textures\
+[WIP] This is a small file, just needs some extra testing. The 16x16 arrays define material IDs across the surface of a texture.
 
-track.trk
-: [Not Started]
-: Driveline definition, dynamic physics objects
+__track.trk__\
+Driveline definition, dynamic physics objects\
+[Not Started]
 
-track_textures.rbz
-: Textures
+__track_textures.rbz__\
+Textures
 
 ## Workflow
 
