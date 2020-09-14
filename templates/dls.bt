@@ -67,7 +67,6 @@ struct AnimationSets {
 } animation_sets;
 
 // Camera ID array.
-// Tested on Rally School and New Bobs.
 typedef struct {
   int camera_id <format=hex>;
   int unknown;
@@ -158,7 +157,8 @@ struct Unknown_0x482C {
   typedef struct {
     int unknown_1 <format=hex>;
     int unknown_2;
-    // This contains some positions which draw out the road.
+    // This contains some positions which draw out the road (at least on the
+    // rally school stage).
     int inner_count;
     // These values are guessed, I have no confirmation of them yet.
     typedef struct {
@@ -197,8 +197,6 @@ struct CameraSpecs {
   CameraSpec cameras[camera_specs_count];
 } camera_specs;
 
-// These two are guessed. For the rally school, the coordinates certainly appear
-// to be correct, but I don't know what these are used for.
 int unknown_0x6570;
 int unknown_0x6574;
 int unknown_0x6578;
@@ -210,6 +208,8 @@ typedef struct {
 } Unknown_0x6578;
 Unknown_0x6578 unknown_0x6578_arr[unknown_0x6578];
 
+// This is guessed. For the rally school, the coordinates certainly appear
+// to be correct, but I don't know what this is used for.
 Position finish_line_position;
 
 float unknown_7;
