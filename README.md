@@ -44,6 +44,6 @@ Textures
 
 ## Workflow
 
-I'm using the 010 editor for it's hex template capabilities. The `templates` directory contains the templates for a particular file extension.
+I'm using the 010 editor for its hex template capabilities. The `templates` directory contains the templates for a particular file extension.
 
 At some point, when enough is figured out, I intend to write some tools for working with these formats.
