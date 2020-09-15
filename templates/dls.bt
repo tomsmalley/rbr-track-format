@@ -30,6 +30,7 @@ if (header != "MINAATAD") return "Incorrect header";
 
 int unknown_0x8;
 int unknown_0xC;
+
 struct Addresses {
   int animation_sets <format=hex>;
   int unknown_0x482C <format=hex>;
@@ -208,11 +209,10 @@ typedef struct {
 } Unknown_0x6578;
 Unknown_0x6578 unknown_0x6578_arr[unknown_0x6578];
 
-// This is guessed. For the rally school, the coordinates certainly appear
-// to be correct, but I don't know what this is used for.
-Position finish_line_position;
-
-float unknown_7;
+struct FinishLinePosition {
+  Position position;
+  float radius;
+} finish_line_position;
 
 struct AnimationIds {
   int count;
