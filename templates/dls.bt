@@ -33,7 +33,7 @@ int unknown_0xC;
 
 struct Addresses {
   int animation_sets <format=hex>;
-  int unknown_0x482C <format=hex>;
+  int drive_line <format=hex>;
   int camera_positions <format=hex>;
   int camera_specs <format=hex>;
   int unknown_0x6570 <format=hex>;
@@ -153,9 +153,10 @@ struct CameraPositions {
   CameraPosition items[count];
 } camera_positions;
 
-struct Unknown_0x482C {
-  int inner_count;
+struct DriveLine {
+  int count;
   typedef struct {
+    // ID like value
     int unknown_1 <format=hex>;
     int unknown_2;
     // This contains some positions which draw out the road (at least on the
@@ -173,12 +174,13 @@ struct Unknown_0x482C {
       Vector3 unknown_vector_1;
       // Seems to be a negated version of the vector above.
       Vector3 unknown_vector_2;
-      float driveline_position;
-    } SomeFloats;
-    SomeFloats inner[inner_count];
-  } Unknown_0x482C_Inner;
-  Unknown_0x482C_Inner inner[inner_count] <optimize=false>;
-} unknown_0x482C;
+      // Distance travelled down the driveline so far
+      float distance;
+    } DriveLinePoint;
+    DriveLinePoint points[inner_count];
+  } DriveLinePart;
+  DriveLinePart parts[count] <optimize=false>;
+} drive_line;
 
 struct CameraSpecs {
   int camera_specs_count;
