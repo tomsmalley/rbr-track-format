@@ -162,7 +162,7 @@ struct DriveLine {
     // This contains some positions which draw out the road (at least on the
     // rally school stage).
     int inner_count;
-    // These values are guessed, I have no confirmation of them yet.
+    // I think these are spline control points.
     typedef struct {
       float unknown_1;
       Position position;
@@ -171,9 +171,9 @@ struct DriveLine {
       } Vector3;
       // Appears to be something like a heading. Adding these to positions
       // approximately results in the next point.
-      Vector3 unknown_vector_1;
-      // Seems to be a negated version of the vector above.
-      Vector3 unknown_vector_2;
+      Vector3 control_point_1;
+      // Usually a negated version of the vector above.
+      Vector3 control_point_2;
       // Distance travelled down the driveline so far
       float distance;
     } DriveLinePoint;
