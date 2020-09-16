@@ -134,7 +134,8 @@ struct CameraPositions {
   typedef struct {
     int camera_id <format=hex>;
     int camera_id_2 <format=hex>;
-    int unknown[2];
+    int driveline_id <format=hex>;
+    int unknown_id <format=hex>;
     // Position of camera in world coordinates
     Position position;
     // All angles are specified in degrees. This is only used for fixed cameras.
@@ -157,8 +158,8 @@ struct DriveLine {
   int count;
   typedef struct {
     // ID like value
-    int unknown_1 <format=hex>;
-    int unknown_2;
+    int driveline_id <format=hex>;
+    int unknown_id <format=hex>;
     // This contains some positions which draw out the road (at least on the
     // rally school stage).
     int inner_count;
@@ -183,7 +184,7 @@ struct DriveLine {
 } drive_line;
 
 struct CameraSpecs {
-  int camera_specs_count;
+  int count;
   typedef struct {
     int camera_id <format=hex>;
     // mode=0: Fixed camera - uses the angle specified in the camera position section.
@@ -197,7 +198,7 @@ struct CameraSpecs {
     float unknown_4;
     float unknown_5;
   } CameraSpec;
-  CameraSpec cameras[camera_specs_count];
+  CameraSpec cameras[count];
 } camera_specs;
 
 int unknown_0x6570;
